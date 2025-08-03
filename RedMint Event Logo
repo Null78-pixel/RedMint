@@ -1,0 +1,22 @@
+// ==UserScript==
+// @name         RedMint Event Logo
+// @namespace    https://youtube.com/
+// @version      1.0
+// @description
+// @match        *://www.youtube.com/*
+// @grant        none
+// ==/UserScript==
+
+(function() {
+  'use strict';
+
+  const now = new Date();
+  const date = now.getDate();
+  const month = now.getMonth(); // 0 = Jan, 7 = Agustus
+
+  if (date === 17 && month === 7) {
+    document.documentElement.setAttribute("data-date-17agustus", "true");
+  } else {
+    document.documentElement.removeAttribute("data-date-17agustus");
+  }
+})();
