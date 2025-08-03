@@ -1,0 +1,68 @@
+// ==UserScript==
+// @name         RedMint Custom Emoji 
+// @namespace    http://tampermonkey.net/
+// @version      1.1
+// @description
+// @author
+// @match        *://www.youtube.com/*
+// @grant        none
+// ==/UserScript==
+
+(function() {
+    'use strict';
+
+    const emojiMap = {
+        ':emlol:': 'https://i.imgur.com/Uki04gE.png',
+        ':bonzi:': 'https://i.imgur.com/yv3vbmv.jpeg',
+        ':sound_horeg:': 'https://i.imgur.com/9g6TxCh.png'
+    };
+
+    function replaceEmojis() {
+        const commentBoxes = document.querySelectorAll('#content-text');
+        commentBoxes.forEach(box => {
+            if (box.dataset.emojiProcessed) return;
+
+            let html = box.innerHTML;
+            for (const [code, url] of Object.entries(emojiMap)) {
+                const imgTag = `<img src="${url}" alt="${code}" style="height: 28px; vertical-align: middle;">`;
+                html = html.replaceAll(code, imgTag);
+            }
+
+            box.innerHTML = html;
+            box.dataset.emojiProcessed = true;
+        });
+    }
+
+    setInterval(replaceEmojis, 1000);
+
+    let typed = '';
+    document.addEventListener('keydown', e => {
+        if (document.fullscreenElement && e.key.length === 1) {
+            typed += e.key.toLowerCase();
+            if (typed.includes('vesona')) {
+                window.location.href = 'https://www.youtube.com/shorts/6Wo2FJGQs_A?feature=share';
+                typed = '';
+            }
+        }
+        if (typed.length > 20) typed = typed.slice(-10);
+    });
+
+    window.addEventListener('load', () => {
+        if (window.location.pathname === "/account_advanced") {
+            const checkExist = setInterval(() => {
+                const target = document.querySelector("#contents") || document.querySelector("ytd-settings-section-renderer");
+                if (target) {
+                    clearInterval(checkExist);
+                    const container = document.createElement("div");
+                    container.style.marginTop = "40px";
+                    container.innerHTML = `
+                        <h3 style="font-weight: 500; font-size: 20px;">Secret</h3>
+                        <input type="text" placeholder="Masukkan sesuatu..."
+                            style="width: 300px; padding: 10px; font-size: 16px; margin-top: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                    `;
+                    target.appendChild(container);
+                }
+            }, 1000);
+        }
+    });
+})();
