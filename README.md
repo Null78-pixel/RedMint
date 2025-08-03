@@ -1,2 +1,3 @@
 # RedMint
 RedMint Is A Youtube Mod....
+Copy & Paste the all code from this repository
